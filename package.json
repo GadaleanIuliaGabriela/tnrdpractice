@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nx serve",
     "start:api": "npm install && nodemon --watch \"apps/api/**/*.ts\" --exec node -r ts-node/register apps/api/src/main.ts",
+    "start:frontend": "npm install && nodemon --watch \"apps/frontend/**/*.tsx\" --exec node -r tsconfig-paths/register -r ts-node/register apps/frontend/src/main.tsx",
     "build": "nx build",
     "test": "nx test"
   },
