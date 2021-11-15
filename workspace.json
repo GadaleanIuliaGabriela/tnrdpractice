@@ -4,6 +4,7 @@
     "api": "apps/api",
     "config": "libs/config",
     "frontend": "apps/frontend",
-    "frontend-e2e": "apps/frontend-e2e"
+    "frontend-e2e": "apps/frontend-e2e",
+    "utils": "libs/utils"
   }
 }

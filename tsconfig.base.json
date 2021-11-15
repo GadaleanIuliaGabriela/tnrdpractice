@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@tnrdpractice/config": ["libs/config/src/index.ts"]
+      "@tnrdpractice/config": ["libs/config/src/index.ts"],
+      "@tnrdpractice/utils": ["libs/utils/src/index.ts"]
     },
     "esModuleInterop": true
   },
