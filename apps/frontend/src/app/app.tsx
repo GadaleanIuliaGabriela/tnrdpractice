@@ -10,11 +10,11 @@ export function App() {
     <div className={styles.app}>
       <header className="flex">
         <Logo width="75" height="75" />
-        <h1>Welcome to frontend!</h1>
+        <h1>Welcome to frontend! :D</h1>
       </header>
       <main>
         <h2>Resources &amp; Tools</h2>
-        <p>Thank you for using and showing some ♥ for Nx.</p>
+        <p>Thank you!</p>
         <div className="flex github-star-container">
           <a
             href="https://github.com/nrwl/nx"
