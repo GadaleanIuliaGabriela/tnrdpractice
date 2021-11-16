@@ -8,10 +8,7 @@
       "start:frontend": "nx serve frontend -- --host=0.0.0.0 --port 4200 --liveReload",
       "build": "nx build",
       "test": "nx test",
-      "ts-node": "ts-node",
-      "typeorm": "ts-node ./node_modules/typeorm/cli -f ./ormconfig.json",
-      "typeorm:migrate": "npm run typeorm migration:generate -- -n",
-      "typeorm:run": "npm run typeorm migrations:run"
+      "typeorm": "ts-node --project tsconfig.ormconfig.json ./node_modules/typeorm/cli.js"
    },
    "private": true,
    "devDependencies": {
