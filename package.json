@@ -4,7 +4,7 @@
    "license": "MIT",
    "scripts": {
       "start": "ts-node src/index.ts",
-      "start:api": "npm install && nodemon --watch \"apps/api/**/*.ts\" --exec node -r ts-node/register apps/api/src/main.ts",
+      "start:api": "npm install && npm run typeorm -- migration:run && nodemon --watch \"apps/api/**/*.ts\" --exec node -r ts-node/register apps/api/src/main.ts",
       "start:frontend": "nx serve frontend -- --host=0.0.0.0 --port 4200 --liveReload",
       "build": "nx build",
       "test": "nx test",
