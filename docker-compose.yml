@@ -40,6 +40,12 @@ services:
       MYSQL_PASSWORD: 'password'
     volumes:
       - db_data:/var/lib/mysql
+  mailer:
+    image: tophfr/mailcatcher
+    container_name: mailcatcher
+    ports:
+      - '1080:80'
+      - '1025:25'
 
 volumes:
   node_modules_api:
