@@ -12,6 +12,8 @@ services:
     volumes:
       - ./:/app
       - node_modules_api:/app/node_modules
+    depends_on:
+      - db
   frontend:
     container_name: frontend
     ports:
@@ -23,6 +25,8 @@ services:
     volumes:
       - ./:/app
       - node_modules_frontend:/app/node_modules
+    depends_on:
+      - db
   db:
     image: mariadb:10.5.9
     container_name: db
@@ -32,12 +36,10 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 'rootpassword'
       MYSQL_USER: 'root'
-      MYSQL_DATABASE: 'tnrdpractice'
+      MYSQL_DATABASE: 'practice'
       MYSQL_PASSWORD: 'password'
     volumes:
       - db_data:/var/lib/mysql
-
-
 
 volumes:
   node_modules_api:
