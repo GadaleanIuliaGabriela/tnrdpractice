@@ -1,21 +1,30 @@
-import express, {RequestHandler, Request, Response, NextFunction} from 'express';
+import express, {Request, Response, NextFunction} from 'express';
 import {json} from 'body-parser';
-import {concat} from 'lodash';
+import userRoutes from './app/routers/user';
+import {createConnection} from "typeorm";
+import {User} from "@tnrdpractice/utils";
 
-const app = express();
+createConnection({
+  name: 'default',
+  type: "mysql",
+  host: "db",
+  port: 3306,
+  username: "root",
+  password: "rootpassword",
+  database: "practice",
+  synchronize: true,
+  entities: [User]
+}).then(connection => {
 
-app.use(json());
+  const app = express();
 
-const getMessage: RequestHandler = (req, res, next) => {
-  res.json({
-    message: "Here is your message.",
-    numbers: concat([1, 2, 3], [10, 11, 12])
+  app.use(json());
+
+  app.use('/api', userRoutes);
+
+  app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    res.status(500).json({message: err.message})
   })
-}
 
-app.get('/', getMessage);
-
-console.log('Hello World!');
-console.log(concat([1, 2, 3], [10, 11, 12]));
-
-app.listen(3000)
+  app.listen(3000)
+});
