@@ -1,8 +1,9 @@
 import express, {Request, Response, NextFunction} from 'express';
 import {json} from 'body-parser';
-import userRoutes from './app/routers/user';
 import {createConnection} from "typeorm";
+import cors from 'cors';
 import {User} from "@tnrdpractice/utils";
+import userRoutes from './app/routers/user';
 
 createConnection({
   name: 'default',
@@ -17,6 +18,14 @@ createConnection({
 }).then(connection => {
 
   const app = express();
+
+  const allowedOrigins: string[] = ['http://localhost:3001', 'http://127.0.0.1:4200'];
+
+  const options: cors.CorsOptions = {
+    origin: allowedOrigins
+  };
+
+  app.use(cors(options));
 
   app.use(json());
 
