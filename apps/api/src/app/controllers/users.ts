@@ -2,8 +2,8 @@ import {RequestHandler} from 'express';
 import {getConnection, getRepository} from "typeorm";
 import bcrypt from "bcrypt";
 import randomString from "randomstring";
-import transporter from "../utils/mailer";
 import {User} from "@tnrdpractice/utils";
+import transporter from "../utils/mailer";
 
 export const getMessage: RequestHandler = (req, res, next) => {
   res.status(201).json({
@@ -21,10 +21,10 @@ export const register: RequestHandler = async (req, res, next) => {
 
   getConnection().manager.save(user).then((user) => {
     const mailOptions = {
-      from: 'tnrdpractice@practice.com',
+      from: process.env.TNRDPRACTICE_EMAIL,
       to: username,
-      subject: 'Hello',
-      text: `http://127.0.0.1:4200/activate/${user.activation_token}`
+      subject: 'Activate account',
+      text: process.env.FRONTEND_URL + `/activate/${user.activation_token}`
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -43,7 +43,6 @@ export const register: RequestHandler = async (req, res, next) => {
 
 export const activateAccount: RequestHandler = async (req, res, next) => {
   const token = (req.query as { token: string }).token
-  console.log(token);
   const userRepository = getRepository(User);
   const user = await userRepository.findOne({where: {activation_token: token}});
   if (!user) {

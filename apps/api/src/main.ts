@@ -6,20 +6,20 @@ import {User} from "@tnrdpractice/utils";
 import userRoutes from './app/routers/user';
 
 createConnection({
-  name: 'default',
+  name: process.env.DB_CONN_NAME,
   type: "mysql",
-  host: "db",
+  host: process.env.DB_HOST,
   port: 3306,
-  username: "root",
-  password: "rootpassword",
-  database: "practice",
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   synchronize: true,
   entities: [User]
 }).then(connection => {
 
   const app = express();
 
-  const allowedOrigins: string[] = ['http://localhost:3001', 'http://127.0.0.1:4200'];
+  const allowedOrigins: string[] = [process.env.API_URL, process.env.FRONTEND_URL];
 
   const options: cors.CorsOptions = {
     origin: allowedOrigins
@@ -36,4 +36,6 @@ createConnection({
   })
 
   app.listen(3000)
+}).catch(e => {
+  console.log("Eroare la conectarea la db")
 });
