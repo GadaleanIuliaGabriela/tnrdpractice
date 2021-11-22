@@ -20,6 +20,9 @@ export class User {
   @Column({nullable: true, length: 255})
   activation_token: string;
 
+  @Column({nullable: true, length: 255})
+  auth_token: string
+
   @CreateDateColumn({
     precision: null,
     type: "datetime",
