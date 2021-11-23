@@ -5,6 +5,7 @@ import {ActivationComponent} from "./components/ActivationComponent";
 import LoginComponent from "./components/LoginComponent";
 import HeaderComponent from "./components/HeaderComponent";
 import {AccountComponent} from "./components/AccountComponent";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,12 +45,7 @@ export function App() {
                 <LoginComponent />
               )}
             />
-            <Route
-              path={`/user`}
-              render={(props) => (
-                <AccountComponent />
-              )}
-            />
+            <ProtectedRoute exact path={`/user`} component={AccountComponent}/>
           </Switch>
         </Router>
       </div>
