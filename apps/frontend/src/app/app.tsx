@@ -4,6 +4,7 @@ import {makeStyles, createStyles, Theme} from "@material-ui/core/styles";
 import {ActivationComponent} from "./components/ActivationComponent";
 import LoginComponent from "./components/LoginComponent";
 import HeaderComponent from "./components/HeaderComponent";
+import {AccountComponent} from "./components/AccountComponent";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,6 +42,12 @@ export function App() {
               path={`/login`}
               render={(props) => (
                 <LoginComponent />
+              )}
+            />
+            <Route
+              path={`/user`}
+              render={(props) => (
+                <AccountComponent />
               )}
             />
           </Switch>

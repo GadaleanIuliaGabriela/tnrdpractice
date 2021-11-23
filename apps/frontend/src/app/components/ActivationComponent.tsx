@@ -36,9 +36,9 @@ export class ActivationComponent extends React.Component<ActivationProps, Activa
     return (
       <div>
         { this.state.errorMessage &&
-        <h3 className="error">{this.state.errorMessage}</h3> }
+        <h3>{this.state.errorMessage}</h3> }
         { this.state.success &&
-        <h3 className="error">{this.state.success}</h3> }
+        <h3>{this.state.success}</h3> }
         <Link to="/login">Login here</Link>
       </div>
     )

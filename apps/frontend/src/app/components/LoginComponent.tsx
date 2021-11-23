@@ -2,11 +2,6 @@ import React, {useRef} from 'react';
 import {Button, TextField, createStyles, Theme, withStyles, WithStyles, Grid, Box} from "@material-ui/core";
 import AuthService from "../api/Auth";
 
-interface Values {
-  email: string,
-  password: string
-}
-
 interface LoginProps extends WithStyles<typeof styles> {
 }
 
