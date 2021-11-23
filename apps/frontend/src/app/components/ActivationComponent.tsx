@@ -1,25 +1,47 @@
 import React from 'react';
 import axios from 'axios';
+import { RouteComponentProps } from 'react-router';
+import {Link} from "react-router-dom";
 
-type ActivationProps = {
-  token: string
+interface MatchParams {
+  token: string;
 }
 
-export class ActivationComponent extends React.Component<any, any> {
+interface ActivationProps extends RouteComponentProps<MatchParams> {
+}
+
+interface ActivationState {
+  success?: string;
+  errorMessage?: string;
+}
+
+export class ActivationComponent extends React.Component<ActivationProps, ActivationState> {
   constructor(props: ActivationProps) {
     super(props);
-    console.log(props);
+    this.state = {
+      success: '',
+      errorMessage: ''
+    };
   }
 
   componentDidMount() {
-
     axios.get(`http://127.0.0.1:3001/api/auth/activate?token=${this.props.match.params.token}`).then(() => {
-      console.log("data");
+      this.setState({success: "Account activated!", errorMessage: undefined})
+    }).catch(err => {
+      this.setState({errorMessage: "Your account is already active.", success: undefined})
     })
   }
 
   render() {
-    return <p>Your account is now active.</p>
+    return (
+      <div>
+        { this.state.errorMessage &&
+        <h3 className="error">{this.state.errorMessage}</h3> }
+        { this.state.success &&
+        <h3 className="error">{this.state.success}</h3> }
+        <Link to="/login">Login here</Link>
+      </div>
+    )
   }
 
 }
