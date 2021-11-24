@@ -5,9 +5,7 @@ interface AccountState {
   email: string
 }
 
-interface AccountProps {
-
-}
+interface AccountProps {}
 
 export class AccountComponent extends React.Component<AccountProps, AccountState> {
   constructor(props: AccountProps) {

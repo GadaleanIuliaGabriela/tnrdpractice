@@ -6,6 +6,7 @@ import LoginComponent from "./components/LoginComponent";
 import HeaderComponent from "./components/HeaderComponent";
 import {AccountComponent} from "./components/AccountComponent";
 import ProtectedRoute from "./components/ProtectedRoute";
+import {LogoutComponent} from "./components/LogoutComponent";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,26 +30,29 @@ export function App() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <HeaderComponent title={"Welcome"}/>
-      <div className={classes.content}>
-        <Router>
+      <Router>
+        <HeaderComponent title={"Welcome"}/>
+        <div className={classes.content}>
           <Switch>
             <Route
-              path={`/activate/:token`}
-              render={(props) => (
-                <ActivationComponent {...props}/>
-              )}
+              exact
+              path='/activate/:token'
+              component={ActivationComponent}
             />
             <Route
-              path={`/login`}
-              render={(props) => (
-                <LoginComponent />
-              )}
+              exact
+              path='/login'
+              component={LoginComponent}
+            />
+            <Route
+              exact
+              path='/logout'
+              component={LogoutComponent}
             />
             <ProtectedRoute exact path={`/user`} component={AccountComponent}/>
           </Switch>
-        </Router>
-      </div>
+        </div>
+      </Router>
     </div>
   );
 }

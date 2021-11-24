@@ -1,6 +1,7 @@
 import React, {useRef} from 'react';
-import {Button, TextField, createStyles, Theme, withStyles, WithStyles, Grid, Box} from "@material-ui/core";
+import {Button, TextField, Theme, withStyles, WithStyles, Grid, Box} from "@material-ui/core";
 import AuthService from "../api/Auth";
+import { useHistory } from "react-router-dom";
 
 interface LoginProps extends WithStyles<typeof styles> {
 }
@@ -28,6 +29,7 @@ const styles = (theme: Theme) => ({
 });
 
 const LoginComponent: React.FC<LoginProps> = (props: LoginProps): JSX.Element => {
+  const history = useHistory();
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
@@ -38,16 +40,10 @@ const LoginComponent: React.FC<LoginProps> = (props: LoginProps): JSX.Element =>
 
     AuthService.login(email, password).then(
       () => {
-        console.log("Login success")
+        history.push("/user");
       },
       error => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        console.log(resMessage)
+        console.log(error)
       }
     );
   };
