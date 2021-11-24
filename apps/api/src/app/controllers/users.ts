@@ -1,5 +1,5 @@
 import {RequestHandler} from 'express';
-import {getConnection, getRepository} from "typeorm";
+import {getRepository} from "typeorm";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import randomString from "randomstring";
@@ -18,14 +18,19 @@ export const register: RequestHandler = async (req, res, next) => {
   const hashedPassword = await bcrypt.hash(password, 8);
   const activationToken = randomString.generate({length: 50, charset: 'alphabetic'});
 
-  const user = new User(username, hashedPassword, 'inactive', activationToken);
+  const userRepository = getRepository(User);
+  const user = await userRepository.findOne({where: {username: username}});
+  if (user) {
+    res.status(400).json({message: 'Cannot create user. A user with the same username exists.'})
+  }
 
-  getConnection().manager.save(user).then((user) => {
+  const newUser = new User(username, hashedPassword, 'inactive', activationToken);
+  await userRepository.save(newUser).then(newUser => {
     const mailOptions = {
       from: process.env.TNRDPRACTICE_EMAIL,
       to: username,
       subject: 'Activate account',
-      text: process.env.FRONTEND_URL + `/activate/${user.activation_token}`
+      text: process.env.FRONTEND_URL + `/activate/${newUser.activation_token}`
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -35,10 +40,10 @@ export const register: RequestHandler = async (req, res, next) => {
       console.log(`Message Sent ${info.response}`);
     })
 
-    res.status(201).json({message: 'User registered: ' + user.username})
-
+    res.status(201).json({message: 'User registered: ' + newUser.username})
   }).catch((error) => {
     console.log(error)
+    res.status(400).json({message: 'Something went wrong.'})
   })
 }
 
@@ -72,6 +77,6 @@ export const login: RequestHandler = async (req, res, next) => {
 
     res.send({user, token})
   } catch (e) {
-    res.status(400).send()
+    res.status(400).send({message: "Something went wrong"})
   }
 }

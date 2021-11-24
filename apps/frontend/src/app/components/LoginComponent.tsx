@@ -1,7 +1,7 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Button, TextField, Theme, withStyles, WithStyles, Grid, Box} from "@material-ui/core";
 import AuthService from "../api/Auth";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 interface LoginProps extends WithStyles<typeof styles> {
 }
@@ -25,11 +25,19 @@ const styles = (theme: Theme) => ({
     paddingRight: '20px',
     margin: '5px',
     paddingBottom: '30px'
+  },
+  error: {
+    paddingTop: '10px',
+    paddingLeft: '20px',
+    paddingRight: '20px',
+    margin: '5px',
+    color: 'red'
   }
 });
 
 const LoginComponent: React.FC<LoginProps> = (props: LoginProps): JSX.Element => {
   const history = useHistory();
+  const [errorMessage, setErrorMessage] = useState("");
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
@@ -43,7 +51,14 @@ const LoginComponent: React.FC<LoginProps> = (props: LoginProps): JSX.Element =>
         history.push("/user");
       },
       error => {
-        console.log(error)
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setErrorMessage(resMessage);
+        console.log(resMessage);
       }
     );
   };
@@ -55,6 +70,12 @@ const LoginComponent: React.FC<LoginProps> = (props: LoginProps): JSX.Element =>
       alignItems="center"
     >
       <form onSubmit={submitHandler} className={props.classes.login}>
+        {
+          errorMessage &&
+          <div className={props.classes.error}>
+            {errorMessage}
+          </div>
+        }
         <div className={props.classes.formField}>
           <TextField
             name="email"
