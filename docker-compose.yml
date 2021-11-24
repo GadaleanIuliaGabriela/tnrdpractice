@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   api:
-    container_name: api
+    container_name: ts_practice_api
     ports:
       - 3001:3000
     build:
@@ -15,7 +15,7 @@ services:
     depends_on:
       - db
   frontend:
-    container_name: frontend
+    container_name: ts_practice_frontend
     ports:
       - 4200:4200
     build:
@@ -29,7 +29,7 @@ services:
       - db
   db:
     image: mariadb:10.5.9
-    container_name: db
+    container_name: ts_practice_db
     restart: always
     ports:
       - 3308:3306
@@ -42,7 +42,7 @@ services:
       - db_data:/var/lib/mysql
   mailer:
     image: tophfr/mailcatcher
-    container_name: mailcatcher
+    container_name: ts_practice_mailcatcher
     ports:
       - '1080:80'
       - '1025:25'

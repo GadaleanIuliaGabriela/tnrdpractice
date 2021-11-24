@@ -1,6 +1,6 @@
 module.exports = {
   type: "mysql",
-  host: "db",
+  host: "ts_practice_db",
   port: 3306,
   username: "root",
   password: "rootpassword",
