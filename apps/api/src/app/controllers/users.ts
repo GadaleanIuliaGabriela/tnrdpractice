@@ -21,7 +21,7 @@ export const register: RequestHandler = async (req, res, next) => {
   const userRepository = getRepository(User);
   const user = await userRepository.findOne({where: {username: username}});
   if (user) {
-    res.status(400).json({message: 'Cannot create user. A user with the same username exists.'})
+    return res.status(400).json({message: 'Cannot create user. A user with the same username exists.'})
   }
 
   const newUser = new User(username, hashedPassword, 'inactive', activationToken);
@@ -52,7 +52,7 @@ export const activateAccount: RequestHandler = async (req, res, next) => {
   const userRepository = getRepository(User);
   const user = await userRepository.findOne({where: {activation_token: token}});
   if (!user) {
-    res.status(400).json({message: 'No user found.'})
+    return res.status(400).json({message: 'No user found.'})
   }
   await userRepository.update(user.id, {activation_token: null, status: 'ACTIVE'})
   res.status(201).json({message: 'The account has been activated: ' + user.username})
@@ -68,7 +68,7 @@ export const login: RequestHandler = async (req, res, next) => {
 
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
-      res.status(400).send({message: "Wrong credentials."})
+      return res.status(400).send({message: "Wrong credentials."})
     }
 
     const token = jwt.sign({email: user.email}, process.env.JWT_SECRET)

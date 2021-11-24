@@ -1,7 +1,7 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
-const API_URL_LOGIN: string = "http://localhost:3001/api/auth/login";
+const API_URL: string = "http://localhost:3001/api/auth";
 type DecodedToken = {
   email: string,
   iat: number
@@ -10,7 +10,7 @@ type DecodedToken = {
 class AuthService {
   login(username: string, password: string) {
     return axios
-      .post(API_URL_LOGIN, {
+      .post(API_URL + '/login', {
         "username": username,
         "password": password
       })
@@ -19,6 +19,17 @@ class AuthService {
           localStorage.setItem("user", JSON.stringify(response.data.token));
         }
 
+        return response.data;
+      });
+  }
+
+  register(username: string, password: string) {
+    return axios
+      .post(API_URL + '/register', {
+        "username": username,
+        "password": password
+      })
+      .then(response => {
         return response.data;
       });
   }

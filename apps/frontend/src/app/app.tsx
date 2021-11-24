@@ -7,6 +7,7 @@ import HeaderComponent from "./components/HeaderComponent";
 import {AccountComponent} from "./components/AccountComponent";
 import ProtectedRoute from "./components/ProtectedRoute";
 import {LogoutComponent} from "./components/LogoutComponent";
+import RegisterComponent from "./components/RegisterComponent";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,6 +49,11 @@ export function App() {
               exact
               path='/logout'
               component={LogoutComponent}
+            />
+            <Route
+              exact
+              path='/register'
+              component={RegisterComponent}
             />
             <ProtectedRoute exact path={`/user`} component={AccountComponent}/>
           </Switch>
