@@ -8,7 +8,7 @@
     "start:frontend": "npm install && nx serve frontend -- --host=0.0.0.0 --port 4200 --liveReload",
     "build": "nx build",
     "test": "nx test",
-    "typeorm": "ts-node --project tsconfig.ormconfig.json ./node_modules/typeorm/cli.js"
+    "typeorm": "ts-node --project tsconfig.ormconfig.json ./node_modules/typeorm/cli.js -f ./ormconfig.js"
   },
   "private": true,
   "devDependencies": {
