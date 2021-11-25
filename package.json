@@ -62,7 +62,7 @@
     "nodemon": "^2.0.15",
     "prettier": "^2.3.1",
     "ts-jest": "27.0.5",
-    "ts-node": "3.3.0",
+    "ts-node": "^10.4.0",
     "url-loader": "^3.0.0"
   },
   "dependencies": {
@@ -87,7 +87,6 @@
     "react-router-dom": "5.3.0",
     "reflect-metadata": "^0.1.10",
     "regenerator-runtime": "0.13.7",
-    "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.11.0",
     "tslib": "^2.0.0",
     "typeorm": "0.2.40",
