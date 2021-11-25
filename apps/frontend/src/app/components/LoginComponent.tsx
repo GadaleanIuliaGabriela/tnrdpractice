@@ -90,6 +90,7 @@ const LoginComponent: React.FC<LoginProps> = (props: LoginProps): JSX.Element =>
             name="password"
             label="Password"
             fullWidth
+            type="password"
             autoComplete="none"
             inputRef={passwordInputRef}
           />

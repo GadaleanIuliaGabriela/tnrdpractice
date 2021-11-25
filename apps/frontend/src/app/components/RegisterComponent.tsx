@@ -90,6 +90,7 @@ const RegisterComponent: React.FC<RegisterProps> = (props: RegisterProps): JSX.E
               name="password"
               label="Password"
               fullWidth
+              type="password"
               autoComplete="none"
               inputRef={passwordInputRef}
             />

@@ -3,6 +3,7 @@ import {getRepository} from "typeorm";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import randomString from "randomstring";
+import {validate} from "class-validator";
 import {User} from "@tnrdpractice/utils";
 import transporter from "../utils/mailer";
 
@@ -19,12 +20,19 @@ export const register: RequestHandler = async (req, res, next) => {
   const activationToken = randomString.generate({length: 50, charset: 'alphabetic'});
 
   const userRepository = getRepository(User);
-  const user = await userRepository.findOne({where: {username: username}});
-  if (user) {
+  const existentUser = await userRepository.findOne({where: {username: username}});
+  if (existentUser) {
     return res.status(400).json({message: 'Cannot create user. A user with the same username exists.'})
   }
 
-  const newUser = new User(username, hashedPassword, 'inactive', activationToken);
+  const errors = await validate(new User(username, password, 'inactive', activationToken));
+  if (errors.length > 0) {
+    const errorMessage = errors.map(error => Object.values(error.constraints));
+    return res.status(400).json({message: 'Cannot create user. ' + errorMessage})
+  }
+
+  const newUser = new User(username, hashedPassword, 'inactive', activationToken)
+
   await userRepository.save(newUser).then(newUser => {
     const mailOptions = {
       from: process.env.TNRDPRACTICE_EMAIL,
@@ -42,7 +50,6 @@ export const register: RequestHandler = async (req, res, next) => {
 
     res.status(201).json({message: 'User registered: ' + newUser.username})
   }).catch((error) => {
-    console.log(error)
     res.status(400).json({message: 'Something went wrong.'})
   })
 }
