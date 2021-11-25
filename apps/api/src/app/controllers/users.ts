@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import randomString from "randomstring";
 import {validate} from "class-validator";
-import {User} from "@tnrdpractice/utils";
+import {User, UserStatus} from "@tnrdpractice/utils";
 import transporter from "../utils/mailer";
 
 export const getMessage: RequestHandler = (req, res, next) => {
@@ -61,7 +61,7 @@ export const activateAccount: RequestHandler = async (req, res, next) => {
   if (!user) {
     return res.status(400).json({message: 'No user found.'})
   }
-  await userRepository.update(user.id, {activation_token: null, status: 'ACTIVE'})
+  await userRepository.update(user.id, {activation_token: null, status: UserStatus.ACTIVE})
   res.status(201).json({message: 'The account has been activated: ' + user.username})
 }
 

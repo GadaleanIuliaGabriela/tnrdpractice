@@ -1,6 +1,12 @@
 import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import {Length, IsEmail} from "class-validator";
 
+export enum UserStatus {
+  ACTIVE = "active",
+  INACTIVE = "inactive",
+  BLOCKED = "blocked"
+}
+
 @Entity('user')
 export class User {
   @PrimaryGeneratedColumn('increment')
@@ -17,7 +23,11 @@ export class User {
   @Column({nullable: false})
   email: string;
 
-  @Column({nullable: false})
+  @Column({
+    type: "enum",
+    enum: UserStatus,
+    default: UserStatus.INACTIVE
+  })
   status: string;
 
   @Column({nullable: true, length: 255})
