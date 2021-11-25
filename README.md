@@ -16,3 +16,9 @@ Check the api app here:
 
 Check the frontend app here:
 `127.0.0.1:4200`
+
+For running storybook:
+`$ nx run frontend:storybook`
+
+Check mailcatcher here:
+`http://127.0.0.1:1080`
