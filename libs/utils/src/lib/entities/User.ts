@@ -7,7 +7,7 @@ export enum UserStatus {
   BLOCKED = "blocked"
 }
 
-@Entity('user')
+@Entity({ name: "user" })
 export class User {
   @PrimaryGeneratedColumn('increment')
   id: number;
