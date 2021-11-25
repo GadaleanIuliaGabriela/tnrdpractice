@@ -73,6 +73,10 @@ export const login: RequestHandler = async (req, res, next) => {
     const userRepository = getRepository(User);
     const user = await userRepository.findOne({where: {username: username}});
 
+    if (user.status !== UserStatus.ACTIVE) {
+      return res.status(400).send({message: "The account is not active. Please check your email to activate the account."})
+    }
+
     const isMatch = await bcrypt.compare(password, user.password)
     if (!isMatch) {
       return res.status(400).send({message: "Wrong credentials."})
