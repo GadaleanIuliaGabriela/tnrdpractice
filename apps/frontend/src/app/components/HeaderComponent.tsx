@@ -45,20 +45,23 @@ const HeaderComponent: FC<Props> = ({title}): ReactElement => {
           <Typography variant="h4" className={classes.logo}>
             {title}
           </Typography>
-            <div className={classes.navlinks}>
-              <Link to="/user" className={classes.link}>
-                User
-              </Link>
-              <Link to="/login" className={classes.link}>
-                Login
-              </Link>
-              <Link to="/logout" className={classes.link}>
-                Logout
-              </Link>
-              <Link to="/register" className={classes.link}>
-                Register
-              </Link>
-            </div>
+          <div className={classes.navlinks}>
+            <Link to="/user" className={classes.link}>
+              User
+            </Link>
+            <Link to="/login" className={classes.link}>
+              Login
+            </Link>
+            <Link to="/logout" className={classes.link}>
+              Logout
+            </Link>
+            <Link to="/register" className={classes.link}>
+              Register
+            </Link>
+            <Link to="/add-product" className={classes.link}>
+              Add product
+            </Link>
+          </div>
         </Toolbar>
       </AppBar>
     </div>

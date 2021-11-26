@@ -1,11 +1,11 @@
 import express, {Request, Response, NextFunction} from 'express';
 import {json} from 'body-parser';
-import {createConnection, getRepository} from "typeorm";
+import {createConnection} from "typeorm";
 import cors from 'cors';
 import {User} from "@tnrdpractice/utils";
 import {Product} from "@tnrdpractice/utils";
 import userRoutes from './app/routers/user';
-
+import productRoutes from './app/routers/product';
 
 createConnection({
   name: process.env.DB_CONN_NAME,
@@ -31,6 +31,8 @@ createConnection({
   app.use(json());
 
   app.use('/api', userRoutes);
+
+  app.use('/product', productRoutes);
 
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     res.status(500).json({message: err.message})
