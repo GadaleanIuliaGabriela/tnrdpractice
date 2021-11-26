@@ -1,5 +1,6 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import {Length, IsEmail} from "class-validator";
+import {Product} from "./Product";
 
 export enum UserStatus {
   ACTIVE = "active",
@@ -50,6 +51,9 @@ export class User {
     onUpdate: 'CURRENT_TIMESTAMP'
   })
   updated_at: Date;
+
+  @OneToMany(() => Product, product => product.owner)
+  products: Product[];
 
   constructor(username: string, password: string, status: string, activation_token?: string) {
     this.username = username;

@@ -1,9 +1,11 @@
 import express, {Request, Response, NextFunction} from 'express';
 import {json} from 'body-parser';
-import {createConnection} from "typeorm";
+import {createConnection, getRepository} from "typeorm";
 import cors from 'cors';
 import {User} from "@tnrdpractice/utils";
+import {Product} from "@tnrdpractice/utils";
 import userRoutes from './app/routers/user';
+
 
 createConnection({
   name: process.env.DB_CONN_NAME,
@@ -13,7 +15,7 @@ createConnection({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [User]
+  entities: [User, Product]
 }).then(connection => {
 
   const app = express();
