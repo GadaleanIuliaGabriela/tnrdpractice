@@ -1,5 +1,6 @@
 import React from "react";
 import AuthService from "../api/Auth";
+import {Link} from "react-router-dom";
 
 interface AccountState {
   email: string
@@ -26,6 +27,9 @@ export class AccountComponent extends React.Component<AccountProps, AccountState
     return (
       <div>
         <p>Welcome { this.state.email }</p>
+        <Link to="/add-product">
+          Add product
+        </Link>
       </div>
     )
   }
