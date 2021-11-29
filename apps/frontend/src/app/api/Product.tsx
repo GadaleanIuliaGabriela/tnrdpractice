@@ -17,6 +17,16 @@ class ProductService {
         return response.data;
       });
   }
+
+  myProducts() {
+    return axios
+      .post(API_URL + '/my-products', {
+        "owner": AuthService.getCurrentUser()
+      })
+      .then(response => {
+        return response.data;
+      });
+  }
 }
 
 export default new ProductService();

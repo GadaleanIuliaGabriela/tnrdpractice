@@ -24,3 +24,20 @@ export const addProduct: RequestHandler = async (req, res, next) => {
     res.status(400).json({message: 'Something went wrong.'})
   })
 }
+
+export const getUserProducts: RequestHandler = async (req, res, next) => {
+  const ownerUsername = (req.body as { owner: string }).owner;
+
+  const userRepository = getRepository(User);
+  const owner = await userRepository.findOne({where: {username: ownerUsername}});
+  if (!owner) {
+    return res.status(400).json({message: 'Owner email not found.'})
+  }
+
+  const productRepository = getRepository(Product);
+  await productRepository.find({where: {owner: owner}}).then((products: Product[]) => {
+    res.status(201).json(products)
+  }).catch(() => {
+    res.status(400).json({message: 'Something went wrong.'})
+  })
+}

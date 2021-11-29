@@ -61,6 +61,9 @@ const HeaderComponent: FC<Props> = ({title}): ReactElement => {
             <Link to="/add-product" className={classes.link}>
               Add product
             </Link>
+            <Link to="/my-products" className={classes.link}>
+              My products
+            </Link>
           </div>
         </Toolbar>
       </AppBar>
