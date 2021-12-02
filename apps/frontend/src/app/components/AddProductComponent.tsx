@@ -121,8 +121,6 @@ const AddProductComponent: React.FC<AddProductProps> = (props: AddProductProps):
             helperText="Please enter product description"
             multiline
             fullWidth
-            rows={2}
-            rowsMax={4}
             inputRef={descriptionInputRef}
           />
         </div>
