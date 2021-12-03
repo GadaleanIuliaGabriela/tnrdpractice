@@ -5,10 +5,10 @@ import {Redirect} from "react-router";
 interface LogoutState {}
 
 interface LogoutProps {
-  handler: () => void
+  handler: () => void;
 }
 
-export class LogoutComponent extends React.Component<any, any> {
+export class LogoutComponent extends React.Component<LogoutProps, LogoutState> {
   constructor(props: LogoutProps) {
     super(props);
   }

@@ -10,6 +10,7 @@ import {LogoutComponent} from "./components/LogoutComponent";
 import RegisterComponent from "./components/RegisterComponent";
 import AddProductComponent from "./components/AddProductComponent";
 import MyProductsComponent from "./components/MyProductsComponent";
+import { RouteComponentProps } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,9 +29,6 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
-
-export interface RouteProps {
-}
 
 export function App() {
   const classes = useStyles();
@@ -58,12 +56,12 @@ export function App() {
             <Route
               exact
               path='/login'
-              component={(props: PropsWithChildren<RouteProps>) => <LoginComponent handler={handleLogin} {...props}/>}
+              component={(props: RouteComponentProps) => <LoginComponent handler={handleLogin} {...props}/>}
             />
             <Route
               exact
               path='/logout'
-              component={(props: PropsWithChildren<RouteProps>) => <LogoutComponent handler={handleLogout} {...props}/>}
+              component={(props: RouteComponentProps) => <LogoutComponent handler={handleLogout} {...props}/>}
             />
             <Route
               exact
