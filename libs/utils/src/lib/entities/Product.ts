@@ -29,7 +29,7 @@ export class Product {
   })
   currency: string;
 
-  @Column({type: 'decimal', nullable: true})
+  @Column({type: 'decimal', precision: 10, scale: 2, default: 0})
   price: number;
 
   @CreateDateColumn({
