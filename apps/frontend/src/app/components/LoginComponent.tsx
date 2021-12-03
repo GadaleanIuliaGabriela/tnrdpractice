@@ -4,6 +4,7 @@ import AuthService from "../api/Auth";
 import {useHistory} from "react-router-dom";
 
 interface LoginProps extends WithStyles<typeof styles> {
+  handler: () => void
 }
 
 const styles = (theme: Theme) => ({
@@ -49,6 +50,7 @@ const LoginComponent: React.FC<LoginProps> = (props: LoginProps): JSX.Element =>
     AuthService.login(email, password).then(
       () => {
         history.push("/user");
+        props.handler()
       },
       error => {
         const resMessage =
@@ -58,7 +60,6 @@ const LoginComponent: React.FC<LoginProps> = (props: LoginProps): JSX.Element =>
           error.message ||
           error.toString();
         setErrorMessage(resMessage);
-        console.log(resMessage);
       }
     );
   };

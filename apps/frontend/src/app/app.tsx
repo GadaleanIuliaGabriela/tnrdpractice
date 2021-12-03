@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PropsWithChildren, useState} from "react";
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {makeStyles, createStyles, Theme} from "@material-ui/core/styles";
 import {ActivationComponent} from "./components/ActivationComponent";
@@ -29,12 +29,25 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+export interface RouteProps {
+}
+
 export function App() {
   const classes = useStyles();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  }
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  }
+
   return (
     <div className={classes.root}>
       <Router>
-        <HeaderComponent title={"Welcome"}/>
+        <HeaderComponent title={"Welcome"} isLoggedIn={isLoggedIn}/>
         <div className={classes.content}>
           <Switch>
             <Route
@@ -45,12 +58,12 @@ export function App() {
             <Route
               exact
               path='/login'
-              component={LoginComponent}
+              component={(props: PropsWithChildren<RouteProps>) => <LoginComponent handler={handleLogin} {...props}/>}
             />
             <Route
               exact
               path='/logout'
-              component={LogoutComponent}
+              component={(props: PropsWithChildren<RouteProps>) => <LogoutComponent handler={handleLogout} {...props}/>}
             />
             <Route
               exact

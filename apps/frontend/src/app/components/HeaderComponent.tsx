@@ -10,7 +10,8 @@ import {Link} from "react-router-dom";
 import {createStyles, Theme} from "@material-ui/core/styles";
 
 interface Props {
-  title: String
+  title: string,
+  isLoggedIn: boolean
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const HeaderComponent: FC<Props> = ({title}): ReactElement => {
+const HeaderComponent: FC<Props> = ({title, isLoggedIn}): ReactElement => {
   const classes = useStyles();
 
   return (
@@ -45,26 +46,30 @@ const HeaderComponent: FC<Props> = ({title}): ReactElement => {
           <Typography variant="h4" className={classes.logo}>
             {title}
           </Typography>
-          <div className={classes.navlinks}>
-            <Link to="/user" className={classes.link}>
-              User
-            </Link>
-            <Link to="/login" className={classes.link}>
-              Login
-            </Link>
-            <Link to="/logout" className={classes.link}>
-              Logout
-            </Link>
-            <Link to="/register" className={classes.link}>
-              Register
-            </Link>
-            <Link to="/add-product" className={classes.link}>
-              Add product
-            </Link>
-            <Link to="/my-products" className={classes.link}>
-              My products
-            </Link>
-          </div>
+          {isLoggedIn ?
+            <div className={classes.navlinks}>
+              <Link to="/user" className={classes.link}>
+                User
+              </Link>
+              <Link to="/add-product" className={classes.link}>
+                Add product
+              </Link>
+              <Link to="/my-products" className={classes.link}>
+                My products
+              </Link>
+              <Link to="/logout" className={classes.link}>
+                Logout
+              </Link>
+            </div> :
+            <div className={classes.navlinks}>
+              <Link to="/login" className={classes.link}>
+                Login
+              </Link>
+              <Link to="/register" className={classes.link}>
+                Register
+              </Link>
+            </div>
+          }
         </Toolbar>
       </AppBar>
     </div>
