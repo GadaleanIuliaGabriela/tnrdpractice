@@ -1,6 +1,12 @@
 import {RequestHandler} from 'express';
 import {getRepository} from "typeorm";
 import {Product, User} from "@tnrdpractice/utils";
+import {Tedis} from "tedis";
+
+const tedis = new Tedis({
+  port: 6379,
+  host: "redis"
+});
 
 export const addProduct: RequestHandler = async (req, res, next) => {
   const title = (req.body as { title: string }).title;
@@ -18,8 +24,9 @@ export const addProduct: RequestHandler = async (req, res, next) => {
   const product = new Product(title, owner, price, currency, description)
 
   const productRepository = getRepository(Product);
-  await productRepository.save(product).then(() => {
+  await productRepository.save(product).then(async () => {
     res.status(201).json({message: 'New product added.'})
+    await tedis.del(owner.email);
   }).catch(() => {
     res.status(400).json({message: 'Something went wrong.'})
   })
@@ -34,8 +41,18 @@ export const getUserProducts: RequestHandler = async (req, res, next) => {
     return res.status(400).json({message: 'Owner email not found.'})
   }
 
+  const exists = await tedis.exists(owner.email)
+  if (exists) {
+    const products = await tedis.hgetall(owner.email);
+    console.log(products);
+    return res.status(201).json({"redis": products});
+  }
+
   const productRepository = getRepository(Product);
-  await productRepository.find({where: {owner: owner}}).then((products: Product[]) => {
+  await productRepository.find({where: {owner: owner}}).then(async (products: Product[]) => {
+    for (const product of products) {
+      await tedis.hset(owner.email, product.title, JSON.stringify(product));
+    }
     res.status(201).json(products)
   }).catch(() => {
     res.status(400).json({message: 'Something went wrong.'})

@@ -24,6 +24,12 @@ class ProductService {
         "owner": AuthService.getCurrentUser()
       })
       .then(response => {
+        if (response.data.redis) {
+          const products: string[] = Object.values(response.data.redis);
+          return products.map((product) => {
+            return JSON.parse(product);
+          })
+        }
         return response.data;
       });
   }
