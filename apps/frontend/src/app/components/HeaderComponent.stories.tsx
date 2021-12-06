@@ -8,7 +8,7 @@ export default {
   title: 'HeaderComponent',
 } as Meta;
 
-const Template: Story = (args) => <MemoryRouter><HeaderComponent title={"Test"} {...args} /></MemoryRouter>;
+const Template: Story = (args) => <MemoryRouter><HeaderComponent title={"Test"} isLoggedIn={true} {...args} /></MemoryRouter>;
 
 export const Primary = Template.bind({});
 Primary.args = {};
