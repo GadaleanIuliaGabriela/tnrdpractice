@@ -16,6 +16,7 @@ const styles = (theme: Theme) => ({
 });
 
 interface Product {
+  id: number;
   title: string;
   description: string;
   price: number;
@@ -63,6 +64,7 @@ class MyProductsComponent extends React.Component<MyProductsProps, MyProductsSta
               <Box
                 sx={{width: "60vw"}}
                 m={2}
+                key={product.id}
               >
                 <Card variant="outlined" className={this.props.classes.productCard}>
                   <Typography variant="h5" component="h3">
