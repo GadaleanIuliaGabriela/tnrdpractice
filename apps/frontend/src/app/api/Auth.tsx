@@ -1,7 +1,6 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
-const API_URL: string = "http://localhost:3001/api/auth";
 type DecodedToken = {
   email: string,
   iat: number
@@ -10,7 +9,7 @@ type DecodedToken = {
 class AuthService {
   login(username: string, password: string) {
     return axios
-      .post(API_URL + '/login', {
+      .post(process.env.NX_APP_API_URL + '/api/auth/login', {
         "username": username,
         "password": password
       })
@@ -25,7 +24,7 @@ class AuthService {
 
   register(username: string, password: string) {
     return axios
-      .post(API_URL + '/register', {
+      .post(process.env.NX_APP_API_URL + '/api/auth/register', {
         "username": username,
         "password": password
       })
