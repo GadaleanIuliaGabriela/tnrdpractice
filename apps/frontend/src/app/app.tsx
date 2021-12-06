@@ -1,5 +1,6 @@
-import React, {PropsWithChildren, useState} from "react";
+import React, {useState} from "react";
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {RouteComponentProps} from 'react-router';
 import {makeStyles, createStyles, Theme} from "@material-ui/core/styles";
 import {ActivationComponent} from "./components/ActivationComponent";
 import LoginComponent from "./components/LoginComponent";
@@ -10,7 +11,6 @@ import {LogoutComponent} from "./components/LogoutComponent";
 import RegisterComponent from "./components/RegisterComponent";
 import AddProductComponent from "./components/AddProductComponent";
 import MyProductsComponent from "./components/MyProductsComponent";
-import { RouteComponentProps } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export function App() {
   const classes = useStyles();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("user"));
 
   const handleLogout = () => {
     setIsLoggedIn(false);
