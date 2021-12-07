@@ -9,8 +9,8 @@ import {AccountComponent} from "./components/AccountComponent";
 import ProtectedRoute from "./components/ProtectedRoute";
 import {LogoutComponent} from "./components/LogoutComponent";
 import RegisterComponent from "./components/RegisterComponent";
-import AddProductComponent from "./components/AddProductComponent";
 import MyProductsComponent from "./components/MyProductsComponent";
+import AddProductComponent from "./components/AddProductComponent";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
