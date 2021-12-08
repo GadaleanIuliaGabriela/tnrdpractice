@@ -7,12 +7,6 @@ import {validate} from "class-validator";
 import {User, UserStatus} from "@tnrdpractice/utils";
 import transporter from "../utils/mailer";
 
-export const getMessage: RequestHandler = (req, res, next) => {
-  res.status(201).json({
-    message: "Hey!"
-  })
-}
-
 export const register: RequestHandler = async (req, res, next) => {
   const username = (req.body as { username: string }).username;
   const password = (req.body as { password: string }).password;

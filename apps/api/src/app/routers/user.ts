@@ -1,9 +1,7 @@
 import {Router} from 'express';
-import {getMessage, register, activateAccount, login} from "../controllers/users";
+import {register, activateAccount, login} from "../controllers/users";
 
 const router = Router();
-
-router.get('/', getMessage)
 
 router.post('/auth/register', register);
 
