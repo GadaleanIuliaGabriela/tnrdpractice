@@ -34,12 +34,12 @@ export const addProduct: RequestHandler = async (req, res, next) => {
 }
 
 export const getUserProducts: RequestHandler = async (req, res, next) => {
-  const ownerUsername = (req.body as { owner: string }).owner;
+  const userId = req.params.id;
 
   const userRepository = getRepository(User);
-  const owner = await userRepository.findOne({where: {username: ownerUsername}});
+  const owner = await userRepository.findOne({where: {id: userId}});
   if (!owner) {
-    return res.status(400).json({message: 'Owner email not found.'})
+    return res.status(400).json({message: 'Owner not found.'})
   }
 
   const exists = await redis.exists(owner.email)

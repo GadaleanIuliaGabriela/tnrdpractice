@@ -1,11 +1,11 @@
-import {RequestHandler} from 'express';
-import {getRepository} from "typeorm";
+import {RequestHandler} from "express";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import randomString from "randomstring";
-import {validate} from "class-validator";
+import {getRepository} from "typeorm";
 import {User, UserStatus} from "@tnrdpractice/utils";
+import {validate} from "class-validator";
 import transporter from "../utils/mailer";
+import jwt from "jsonwebtoken";
 
 export const register: RequestHandler = async (req, res, next) => {
   const username = (req.body as { username: string }).username;
@@ -76,7 +76,7 @@ export const login: RequestHandler = async (req, res, next) => {
       return res.status(400).send({message: "Wrong credentials."})
     }
 
-    const token = jwt.sign({email: user.email}, process.env.JWT_SECRET)
+    const token = jwt.sign({email: user.email, id: user.id}, process.env.JWT_SECRET)
 
     await userRepository.update(user.id, {auth_token: token})
 

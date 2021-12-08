@@ -17,9 +17,9 @@ export class AccountComponent extends React.Component<AccountProps, AccountState
   }
 
   componentDidMount() {
-    const email = AuthService.getCurrentUser();
-    if (email) {
-      this.setState({email: email})
+    const user = AuthService.getCurrentUser();
+    if (user) {
+      this.setState({email: user.email})
     }
   }
 

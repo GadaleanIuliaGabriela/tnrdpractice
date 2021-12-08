@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { RouteComponentProps } from 'react-router';
 import {Link} from "react-router-dom";
+import AuthService from "../api/Auth";
 
 interface MatchParams {
   token: string;
@@ -25,9 +26,9 @@ export class ActivationComponent extends React.Component<ActivationProps, Activa
   }
 
   componentDidMount() {
-    axios.get(`http://127.0.0.1:3001/api/auth/activate?token=${this.props.match.params.token}`).then(() => {
+    AuthService.activateAccount(this.props.match.params.token).then(() => {
       this.setState({success: "Account activated!", errorMessage: undefined})
-    }).catch(err => {
+    }).catch(() => {
       this.setState({errorMessage: "Your account is already active.", success: undefined})
     })
   }

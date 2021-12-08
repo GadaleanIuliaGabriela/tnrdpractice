@@ -3,13 +3,14 @@ import jwt_decode from "jwt-decode";
 
 type DecodedToken = {
   email: string,
+  id: number,
   iat: number
 }
 
 class AuthService {
   login(username: string, password: string) {
     return axios
-      .post(process.env.NX_APP_API_URL + '/api/auth/login', {
+      .post(process.env.NX_APP_API_URL + '/api/v1/auth/login', {
         "username": username,
         "password": password
       })
@@ -24,7 +25,7 @@ class AuthService {
 
   register(username: string, password: string) {
     return axios
-      .post(process.env.NX_APP_API_URL + '/api/auth/register', {
+      .post(process.env.NX_APP_API_URL + '/api/v1/auth/register', {
         "username": username,
         "password": password
       })
@@ -37,12 +38,16 @@ class AuthService {
     localStorage.removeItem("user");
   }
 
-  getCurrentUser(): string | void {
+  getCurrentUser(): { email: string, id: number } | void {
     const userStr = localStorage.getItem("user");
     if (userStr) {
       const decoded = jwt_decode(JSON.parse(userStr)) as DecodedToken;
-      return decoded.email;
+      return {email: decoded.email, id: decoded.id};
     }
+  }
+
+  activateAccount(token: string) {
+    return axios.get(process.env.NX_APP_API_URL + `/api/v1/auth/activate?token=${token}`);
   }
 }
 

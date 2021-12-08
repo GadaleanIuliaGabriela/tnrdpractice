@@ -40,11 +40,12 @@ class MyProductsComponent extends React.Component<MyProductsProps, MyProductsSta
   }
 
   async componentDidMount() {
-    await ProductService.myProducts().then(products => {
+    const products = await ProductService.myProducts();
+    if(products) {
       this.setState({products: products, errorMessage: undefined});
-    }).catch(error => {
-      this.setState({errorMessage: error.message, products: undefined});
-    })
+    } else {
+      this.setState({errorMessage: "Something went wrong.", products: undefined});
+    }
   }
 
   render() {
