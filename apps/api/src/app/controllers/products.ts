@@ -1,12 +1,13 @@
 import {RequestHandler} from 'express';
 import {getRepository} from "typeorm";
 import {Product, User} from "@tnrdpractice/utils";
-import {Tedis} from "tedis";
+import { createClient } from 'redis';
 
-const tedis = new Tedis({
-  port: 6379,
-  host: "redis"
+const redis = createClient({
+  url: 'redis://ts_practice_redis:6379'
 });
+
+redis.connect()
 
 export const addProduct: RequestHandler = async (req, res, next) => {
   const title = (req.body as { title: string }).title;
@@ -26,7 +27,7 @@ export const addProduct: RequestHandler = async (req, res, next) => {
   const productRepository = getRepository(Product);
   await productRepository.save(product).then(async () => {
     res.status(201).json({message: 'New product added.'})
-    await tedis.del(owner.email);
+    await redis.del(owner.email);
   }).catch(() => {
     res.status(400).json({message: 'Something went wrong.'})
   })
@@ -41,17 +42,16 @@ export const getUserProducts: RequestHandler = async (req, res, next) => {
     return res.status(400).json({message: 'Owner email not found.'})
   }
 
-  const exists = await tedis.exists(owner.email)
+  const exists = await redis.exists(owner.email)
   if (exists) {
-    const products = await tedis.hgetall(owner.email);
-    console.log(products);
+    const products = await redis.hGetAll(owner.email);
     return res.status(201).json({"redis": products});
   }
 
   const productRepository = getRepository(Product);
   await productRepository.find({where: {owner: owner}}).then(async (products: Product[]) => {
     for (const product of products) {
-      await tedis.hset(owner.email, product.title, JSON.stringify(product));
+      await redis.hSet(owner.email, product.title, JSON.stringify(product));
     }
     res.status(201).json(products)
   }).catch(() => {

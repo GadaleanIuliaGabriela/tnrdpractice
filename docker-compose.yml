@@ -51,6 +51,7 @@ services:
       - '1025:25'
   redis:
     image: redis:6.2-alpine
+    container_name: ts_practice_redis
     ports:
       - 6379:6379
 

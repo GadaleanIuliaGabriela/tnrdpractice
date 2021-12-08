@@ -91,7 +91,6 @@
     "redis": "^4.0.0",
     "reflect-metadata": "^0.1.10",
     "regenerator-runtime": "0.13.7",
-    "tedis": "^0.1.12",
     "tsconfig-paths": "^3.11.0",
     "tslib": "^2.0.0",
     "typeorm": "0.2.40",
