@@ -54,6 +54,10 @@ services:
     container_name: ts_practice_redis
     ports:
       - 6379:6379
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    ports:
+      - '8001:8001'
 
 volumes:
   node_modules_api:

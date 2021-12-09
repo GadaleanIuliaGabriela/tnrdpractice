@@ -27,7 +27,7 @@ export const addProduct: RequestHandler = async (req, res, next) => {
   const productRepository = getRepository(Product);
   await productRepository.save(product).then(async () => {
     res.status(201).json({message: 'New product added.'})
-    await redis.del(owner.email);
+    await redis.del(`${owner.email}:/api/v1/users/${owner.id}/products`);
   }).catch(() => {
     res.status(400).json({message: 'Something went wrong.'})
   })
@@ -42,17 +42,15 @@ export const getUserProducts: RequestHandler = async (req, res, next) => {
     return res.status(400).json({message: 'Owner not found.'})
   }
 
-  const exists = await redis.exists(owner.email)
+  const exists = await redis.exists(`${owner.email}:${req.originalUrl}`)
   if (exists) {
-    const products = await redis.hGetAll(owner.email);
-    return res.status(201).json({"redis": products});
+    const products = await redis.get(`${owner.email}:${req.originalUrl}`);
+    return res.status(201).json(JSON.parse(products));
   }
 
   const productRepository = getRepository(Product);
   await productRepository.find({where: {owner: owner}}).then(async (products: Product[]) => {
-    for (const product of products) {
-      await redis.hSet(owner.email, product.title, JSON.stringify(product));
-    }
+    await redis.set(`${owner.email}:${req.originalUrl}`, JSON.stringify(products));
     res.status(201).json(products)
   }).catch(() => {
     res.status(400).json({message: 'Something went wrong.'})

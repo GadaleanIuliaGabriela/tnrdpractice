@@ -23,12 +23,6 @@ class ProductService {
       return axios
         .get(process.env.NX_APP_API_URL + `/api/v1/users/${user.id}/products`)
         .then(response => {
-          if (response.data.redis) {
-            const products: string[] = Object.values(response.data.redis);
-            return products.map((product) => {
-              return JSON.parse(product);
-            })
-          }
           return response.data;
         });
     }
