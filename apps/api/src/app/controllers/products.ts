@@ -1,13 +1,9 @@
 import {RequestHandler} from 'express';
 import {getRepository} from "typeorm";
 import {Product, User} from "@tnrdpractice/utils";
-import { createClient } from 'redis';
+import {CacheService} from "../utils/cacheService";
 
-const redis = createClient({
-  url: 'redis://ts_practice_redis:6379'
-});
-
-redis.connect()
+const redis = new CacheService();
 
 export const addProduct: RequestHandler = async (req, res, next) => {
   const title = (req.body as { title: string }).title;
@@ -27,7 +23,7 @@ export const addProduct: RequestHandler = async (req, res, next) => {
   const productRepository = getRepository(Product);
   await productRepository.save(product).then(async () => {
     res.status(201).json({message: 'New product added.'})
-    await redis.del(`${owner.email}:/api/v1/users/${owner.id}/products`);
+    await redis.delete(`${owner.email}:/api/v1/users/${owner.id}/products`);
   }).catch(() => {
     res.status(400).json({message: 'Something went wrong.'})
   })
@@ -50,7 +46,7 @@ export const getUserProducts: RequestHandler = async (req, res, next) => {
 
   const productRepository = getRepository(Product);
   await productRepository.find({where: {owner: owner}}).then(async (products: Product[]) => {
-    await redis.set(`${owner.email}:${req.originalUrl}`, JSON.stringify(products));
+    await redis.set(`${owner.email}:${req.originalUrl}`, products);
     res.status(201).json(products)
   }).catch(() => {
     res.status(400).json({message: 'Something went wrong.'})
