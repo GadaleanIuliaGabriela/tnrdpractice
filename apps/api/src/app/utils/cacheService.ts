@@ -3,8 +3,8 @@ import Redis from "ioredis";
 export class CacheService {
   private redisClient: Redis.Redis
 
-  constructor() {
-    this.redisClient = new Redis('redis://ts_practice_redis:6379');
+  constructor(host: string = process.env.REDIS_HOST, port: number = +process.env.REDIS_PORT) {
+    this.redisClient = new Redis(port, host);
   }
 
   async set(key: string, value, ttl: number = null) {
