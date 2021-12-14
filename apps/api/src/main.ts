@@ -4,17 +4,18 @@ import {createConnection} from "typeorm";
 import cors from 'cors';
 import {User} from "@tnrdpractice/utils";
 import {Product} from "@tnrdpractice/utils";
+import {config} from "@tnrdpractice/config";
 import securityRoutes from './app/routes/security';
 import productRoutes from './app/routes/product';
 
 createConnection({
-  name: process.env.DB_CONN_NAME,
+  name: config.mysql.connectionName ? config.mysql.connectionName : process.env.DB_CONN_NAME,
   type: "mysql",
-  host: process.env.DB_HOST,
-  port: 3306,
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: config.mysql.host ? config.mysql.host : process.env.DB_HOST,
+  port: config.mysql.port ? +config.mysql.port : +process.env.DB_PORT,
+  username: config.mysql.username ? config.mysql.username : process.env.DB_USERNAME,
+  password: config.mysql.password ? config.mysql.password : process.env.DB_PASSWORD,
+  database: config.mysql.name ? config.mysql.name : process.env.DB_NAME,
   entities: [User, Product]
 }).then(connection => {
 
