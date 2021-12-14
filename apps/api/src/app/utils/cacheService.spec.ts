@@ -1,37 +1,56 @@
-import {CacheService} from "./cacheService";
+import IORedis from 'ioredis';
+import CacheService from './cacheService';
 
-describe('cache service', () => {
-  it('should check if a key exists', async () => {
-    const redis = new CacheService(process.env.REDIS_HOST_TEST);
-    await redis.set("test", "test value");
+jest.mock('ioredis');
 
-    const exists = await redis.exists("test")
-    expect(exists).toBe(1);
+const IORedisMock = IORedis as jest.MockedClass<typeof IORedis>;
 
-    const doesNotExists = await redis.exists("not")
-    expect(doesNotExists).toBe(0);
-  })
+describe("Testing Cache Service", () => {
+  beforeEach(() => {
+    IORedisMock.mockClear();
+  });
 
-  it('should return the value for a key', async () => {
-    const redis = new CacheService(process.env.REDIS_HOST_TEST);
-    await redis.set("test", "test value");
+  test('Check if the cache service called the redis constructor', () => {
+    const cacheService = new CacheService();
+    expect(IORedisMock).toHaveBeenCalledTimes(1);
+  });
 
-    const value = await redis.get("test");
-    expect(value).toEqual("\"test value\"");
+  test('Check set method', async () => {
+    const cacheService = new CacheService();
+    expect(IORedisMock).toHaveBeenCalledTimes(1);
 
-    const doesNotExists = await redis.get("not");
-    expect(doesNotExists).toEqual(null);
-  })
+    await cacheService.set("key", "test");
+    expect(IORedisMock.prototype.set.mock.calls[0][0]).toEqual("key");
+  });
 
-  it('should delete the key', async () => {
-    const redis = new CacheService(process.env.REDIS_HOST_TEST);
-    await redis.set("test", "test value");
+  test('Check get method', async () => {
+    const cacheService = new CacheService();
+    expect(IORedisMock).toHaveBeenCalledTimes(1);
 
-    const value = await redis.get("test");
-    expect(value).toEqual("\"test value\"");
+    jest.spyOn(IORedisMock.prototype, "get").mockImplementation(() => "test");
+    const cachedValue = await cacheService.get("key")
+    expect(IORedisMock.prototype.get.mock.calls[0][0]).toEqual("key");
+    expect(cachedValue).toBe("test");
+  });
 
-    await redis.delete("test")
-    const find = await redis.get("test");
-    expect(find).toBe(null);
-  })
+  test('Check exist method', async () => {
+    const cacheService = new CacheService();
+    expect(IORedisMock).toHaveBeenCalledTimes(1);
+
+    jest.spyOn(IORedisMock.prototype, "exists").mockImplementation(() => true);
+    const cachedValueExists = await cacheService.exists("key")
+    expect(IORedisMock.prototype.exists.mock.calls[0][0]).toEqual("key");
+    expect(cachedValueExists).toBeTruthy();
+  });
+
+  test('Check delete method', async () => {
+    const cacheService = new CacheService();
+    expect(IORedisMock).toHaveBeenCalledTimes(1);
+
+    jest.spyOn(IORedisMock.prototype, "del").mockImplementation(() => true);
+    const deletedCached = await cacheService.delete("key")
+    expect(IORedisMock.prototype.del.mock.calls[0][0]).toEqual("key");
+    expect(deletedCached).toBeTruthy();
+  });
+
 })

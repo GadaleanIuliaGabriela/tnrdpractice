@@ -1,7 +1,7 @@
 import {RequestHandler} from 'express';
 import {getRepository} from "typeorm";
 import {Product, User} from "@tnrdpractice/utils";
-import {CacheService} from "../utils/cacheService";
+import CacheService from "../utils/cacheService";
 
 const redis = new CacheService();
 
