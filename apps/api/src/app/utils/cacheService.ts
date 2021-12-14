@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import {config} from "@tnrdpractice/config";
+import config from "@tnrdpractice/config";
 
 export default class CacheService {
   private redisClient: Redis.Redis
