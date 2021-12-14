@@ -23,6 +23,15 @@ describe("Testing Cache Service", () => {
     expect(IORedisMock.prototype.set.mock.calls[0][0]).toEqual("key");
   });
 
+  test('Check set method with ttl', async () => {
+    const cacheService = new CacheService();
+    expect(IORedisMock).toHaveBeenCalledTimes(1);
+
+    await cacheService.set("key", "test", 3000);
+    expect(IORedisMock.prototype.set.mock.calls[0][2]).toEqual("EX");
+    expect(IORedisMock.prototype.set.mock.calls[0][3]).toEqual(3000);
+  });
+
   test('Check get method', async () => {
     const cacheService = new CacheService();
     expect(IORedisMock).toHaveBeenCalledTimes(1);
