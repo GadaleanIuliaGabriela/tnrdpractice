@@ -2,7 +2,7 @@ import Redis from "ioredis";
 import config from "@tnrdpractice/config";
 
 export default class CacheService {
-  private redisClient: Redis.Redis
+  protected redisClient: Redis.Redis
 
   constructor(host: string = config.redis.host, port: number = config.redis.port) {
     this.redisClient = new Redis(port, host);

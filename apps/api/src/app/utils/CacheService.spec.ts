@@ -1,5 +1,5 @@
 import IORedis from 'ioredis';
-import CacheService from './cacheService';
+import CacheService from './CacheService';
 
 jest.mock('ioredis');
 
